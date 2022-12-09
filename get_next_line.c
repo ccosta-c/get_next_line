@@ -6,7 +6,7 @@
 /*   By: ccosta-c <ccosta-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:30:14 by ccosta-c          #+#    #+#             */
-/*   Updated: 2022/12/06 21:47:37 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/09 01:11:49 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,23 +30,51 @@ static char	*ft_read_dirty_line(char *stash, int fd)
 			return (NULL);
 		}
 		*(content_read + bytes_read) = '\0';
-		 tmp = ft_strjoin(stash, content_read);
-		 free (stash);
-		 stash = tmp;
+		tmp = ft_strjoin(stash, content_read);
+		free (stash);
+		stash = tmp;
 	}
 	free (content_read);
 	return (stash);
 }
 
-char *get_next_line(int fd)
+char	*ft_clean_line(char *stash)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	while ((*(stash + i) != '\n') && (*(stash + i) != '\0'))
+	{
+		i++;
+	}
+	line = malloc(sizeof(char) * (i + 2));
+	i = 0;
+	while ((*(stash + i) != '\n' && (*(stash + i) != '\0')))
+	{
+		*(line + i) = *(stash + i);
+		i++;
+	}
+	*(line + i) = *(stash + i);
+	i++;
+	*(line + i) = '\0';
+	return (line);
+}
+
+char	*get_next_line(int fd)
 {
 	static char	*stash;
-	
+	char		*clean_line;
+
 	if (fd < 0 || BUFFER_SIZE < 1)
 	{
 		return (NULL);
 	}
 	stash = ft_read_dirty_line(stash, fd);
-	printf("%s", stash);
-	return (stash);
+	printf("stash - %s\n", stash);
+	clean_line = ft_clean_line(stash);
+	printf("clean line - %s\n", clean_line);
+	stash = ft_get_trash(stash);
+	printf("stash - %s\n", stash);
+	return (clean_line);
 }
