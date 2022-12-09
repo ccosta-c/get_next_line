@@ -6,7 +6,7 @@
 /*   By: ccosta-c <ccosta-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:30:32 by ccosta-c          #+#    #+#             */
-/*   Updated: 2022/12/06 21:54:05 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/09 01:12:39 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,12 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	
 	len = (ft_strlen(s1) + ft_strlen(s2));
 	str = malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	i = 0;
-	while (s1 &&*(s1 + i))
+	while (s1 && *(s1 + i))
 	{
 		*(str + i) = *(s1 + i);
 		i++;
@@ -67,7 +66,7 @@ size_t	ft_strlen(char *s)
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	char	*ptr;
-	int 	x;
+	int		x;
 
 	x = nmemb * size;
 	ptr = malloc(x);
