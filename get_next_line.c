@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccosta-c <ccosta-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccosta-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:30:14 by ccosta-c          #+#    #+#             */
-/*   Updated: 2022/12/09 02:04:45 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:39:09 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static char	*ft_read_dirty_line(char *stash, int fd)
 		bytes_read = read(fd, content_read, BUFFER_SIZE);
 		if (bytes_read < 0)
 		{
-			free (stash);
+			if (stash)
+				free (stash);
 			free (content_read);
 			return (NULL);
 		}
@@ -38,15 +39,19 @@ static char	*ft_read_dirty_line(char *stash, int fd)
 	return (stash);
 }
 
-char	*ft_clean_line(char *stash)
+static char	*ft_clean_line(char *stash)
 {
 	char	*line;
 	int		i;
 
 	i = 0;
+	if (!(*(stash + i)))
+		return (NULL);
 	while ((*(stash + i) != '\n') && (*(stash + i) != '\0'))
 		i++;
-	line = malloc(sizeof(char) * (i + 2));
+	line = ft_calloc(sizeof(char), (i + 2));
+	if (!line)
+		return (NULL);
 	i = 0;
 	while ((*(stash + i) != '\n' && (*(stash + i) != '\0')))
 	{
@@ -59,7 +64,7 @@ char	*ft_clean_line(char *stash)
 	return (line);
 }
 
-char	*ft_get_trash(char *stash)
+static char	*ft_get_trash(char *stash)
 {
 	char	*tmp;
 	int		i;
@@ -69,13 +74,19 @@ char	*ft_get_trash(char *stash)
 	j = 0;
 	while ((*(stash + i) != '\n') && (*(stash + i) != '\0'))
 		i++;
-	while (*(stash + i) != '\0')
+	if (!(*(stash + i)))
 	{
-		i++;
-		j++;
+		free(stash);
+		return (NULL);
 	}
-	tmp = malloc(sizeof(char) * (j + 1));
-
+	tmp = ft_calloc(sizeof(char), ((ft_strlen(stash) - i)));
+	if (!tmp)
+		return (NULL);
+	i++;
+	while ((*(stash + i)) != '\0')
+		*(tmp + j++) = *(stash + i++);
+	free (stash);
+	return (tmp);
 }
 
 char	*get_next_line(int fd)
@@ -88,10 +99,12 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	stash = ft_read_dirty_line(stash, fd);
-	printf("stash - %s\n", stash);
+	if (!stash)
+		return (NULL);
+	//printf("stash - %s\n", stash);
 	clean_line = ft_clean_line(stash);
-	printf("clean line - %s\n", clean_line);
+	//printf("clean line - %s", clean_line);
 	stash = ft_get_trash(stash);
-	printf("stash - %s\n", stash);
+	//printf("stash - %s", stash);
 	return (clean_line);
 }

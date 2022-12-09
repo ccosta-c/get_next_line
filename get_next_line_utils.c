@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccosta-c <ccosta-c@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ccosta-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:30:32 by ccosta-c          #+#    #+#             */
-/*   Updated: 2022/12/09 01:12:39 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/09 16:14:27 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
 	size_t	len;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	len = (ft_strlen(s1) + ft_strlen(s2));
-	str = malloc((len + 1) * sizeof(char));
+	str = ft_calloc(sizeof(char), (len + 1));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -70,13 +70,9 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 	x = nmemb * size;
 	ptr = malloc(x);
-	if (ptr == NULL)
-	{
-		return (ptr);
-	}
-	while (x-- >= 0)
-	{
+	if (!ptr)
+		return (NULL);
+	while (--x >= 0)
 		*(ptr + x) = '\0';
-	}
 	return ((void *)ptr);
 }
