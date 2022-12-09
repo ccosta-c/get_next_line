@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccosta-c <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ccosta-c <ccosta-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/25 00:55:55 by codespace         #+#    #+#             */
-/*   Updated: 2022/12/03 16:10:36 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/09 01:08:59 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(void)
 {
 	int	fd;
+
 	fd = open("text.txt", O_RDONLY);
 	get_next_line(fd);
 	return (0);
