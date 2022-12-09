@@ -6,7 +6,7 @@
 /*   By: ccosta-c <ccosta-c@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:30:14 by ccosta-c          #+#    #+#             */
-/*   Updated: 2022/12/09 01:11:49 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/09 02:04:45 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ char	*ft_clean_line(char *stash)
 
 	i = 0;
 	while ((*(stash + i) != '\n') && (*(stash + i) != '\0'))
-	{
 		i++;
-	}
 	line = malloc(sizeof(char) * (i + 2));
 	i = 0;
 	while ((*(stash + i) != '\n' && (*(stash + i) != '\0')))
@@ -59,6 +57,25 @@ char	*ft_clean_line(char *stash)
 	i++;
 	*(line + i) = '\0';
 	return (line);
+}
+
+char	*ft_get_trash(char *stash)
+{
+	char	*tmp;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while ((*(stash + i) != '\n') && (*(stash + i) != '\0'))
+		i++;
+	while (*(stash + i) != '\0')
+	{
+		i++;
+		j++;
+	}
+	tmp = malloc(sizeof(char) * (j + 1));
+
 }
 
 char	*get_next_line(int fd)
