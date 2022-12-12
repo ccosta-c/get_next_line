@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccosta-c <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 15:30:14 by ccosta-c          #+#    #+#             */
-/*   Updated: 2022/12/12 11:40:43 by ccosta-c         ###   ########.fr       */
+/*   Updated: 2022/12/12 11:05:22 by ccosta-c         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_read_dirty_line(char *stash, int fd)
 {
@@ -66,7 +66,7 @@ static char	*ft_clean_line(char *stash)
 
 static char	*ft_get_trash(char *stash)
 {
-	char	*tmp_stash;
+	char	*tmp;
 	int		i;
 	int		j;
 
@@ -79,25 +79,29 @@ static char	*ft_get_trash(char *stash)
 		free(stash);
 		return (NULL);
 	}
-	tmp_stash = ft_calloc(sizeof(char), ((ft_strlen(stash) - i)));
-	if (!tmp_stash)
+	tmp = ft_calloc(sizeof(char), ((ft_strlen(stash) - i)));
+	if (!tmp)
 		return (NULL);
 	i++;
 	while ((*(stash + i)) != '\0')
-		*(tmp_stash + j++) = *(stash + i++);
+		*(tmp + j++) = *(stash + i++);
 	free (stash);
-	return (tmp_stash);
+	return (tmp);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[MAX_FILES];
 	char		*clean_line;
 
-	stash = ft_read_dirty_line(stash, fd);
-	if (!stash)
+	if (fd < 0 || fd > MAX_FILES || BUFFER_SIZE < 1)
+	{
 		return (NULL);
-	clean_line = ft_clean_line(stash);
-	stash = ft_get_trash(stash);
+	}
+	*(stash + fd) = ft_read_dirty_line(*(stash + fd), fd);
+	if (!*(stash + fd))
+		return (NULL);
+	clean_line = ft_clean_line(*(stash + fd));
+	*(stash + fd) = ft_get_trash(*(stash + fd));
 	return (clean_line);
 }
